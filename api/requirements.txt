@@ -1,0 +1,21 @@
+# FastAPI service — Above AI Center dashboard backend
+# Install: pip install -r api/requirements.txt
+
+# Web framework
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+
+# Everything the tools/ directory needs
+python-dotenv>=1.0.0
+requests>=2.31.0
+supabase>=2.4.0
+psycopg2-binary>=2.9.9
+intuit-oauth>=1.2.6
+python-quickbooks>=0.9.4
+google-api-python-client>=2.120.0
+google-auth>=2.28.0
+google-auth-oauthlib>=1.2.0
+google-auth-httplib2>=0.2.0
+facebook-business>=19.0.0
+anthropic>=0.23.0
+python-dateutil>=2.9.0
