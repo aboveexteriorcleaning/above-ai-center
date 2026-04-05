@@ -2,7 +2,7 @@
 
 import {
   LineChart, Line, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, AreaChart, Area,
 } from "recharts";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -24,6 +24,16 @@ function isNumeric(v: unknown): boolean {
   return typeof v === "number";
 }
 
+const TOOLTIP_STYLE = {
+  contentStyle: {
+    background: "#242638",
+    border: "1px solid #2e3048",
+    borderRadius: 12,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+  },
+  labelStyle: { color: "#a0a3b8", fontSize: 12 },
+};
+
 export function ChartRenderer({ chartHint, data }: Props) {
   if (!data || data.length === 0) return null;
 
@@ -35,11 +45,7 @@ export function ChartRenderer({ chartHint, data }: Props) {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3">
         {keys.map((k) => (
-          <KpiCard
-            key={k}
-            label={k.replace(/_/g, " ")}
-            value={formatValue(row[k])}
-          />
+          <KpiCard key={k} label={k.replace(/_/g, " ")} value={formatValue(row[k])} />
         ))}
       </div>
     );
@@ -53,27 +59,34 @@ export function ChartRenderer({ chartHint, data }: Props) {
     const numericKeys = keys.filter((k) => k !== dateKey && isNumeric(data[0][k]));
 
     return (
-      <div className="mt-3 rounded-lg bg-zinc-900/50 border border-zinc-800 p-4">
+      <div className="mt-3 rounded-xl border p-4" style={{ background: "#1a1c2e", borderColor: "#2e3048" }}>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={data} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey={dateKey} tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
-            <Tooltip
-              contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 6 }}
-              labelStyle={{ color: "#a1a1aa" }}
-            />
+          <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 4 }}>
+            <defs>
+              {numericKeys.map((k, i) => (
+                <linearGradient key={k} id={`grad-${i}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={i === 0 ? "#41bfec" : "#7dd3f0"} stopOpacity={0.2} />
+                  <stop offset="100%" stopColor={i === 0 ? "#41bfec" : "#7dd3f0"} stopOpacity={0} />
+                </linearGradient>
+              ))}
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2e3048" vertical={false} />
+            <XAxis dataKey={dateKey} tick={{ fill: "#6b6f8a", fontSize: 10 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: "#6b6f8a", fontSize: 10 }} axisLine={false} tickLine={false} width={44} />
+            <Tooltip {...TOOLTIP_STYLE} />
             {numericKeys.map((k, i) => (
-              <Line
+              <Area
                 key={k}
                 type="monotone"
                 dataKey={k}
-                stroke={i === 0 ? "#3b82f6" : "#10b981"}
+                stroke={i === 0 ? "#41bfec" : "#7dd3f0"}
                 strokeWidth={2}
+                fill={`url(#grad-${i})`}
                 dot={false}
+                activeDot={{ r: 4, fill: i === 0 ? "#41bfec" : "#7dd3f0" }}
               />
             ))}
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     );
@@ -85,18 +98,19 @@ export function ChartRenderer({ chartHint, data }: Props) {
     const numericKeys = keys.filter((k) => k !== catKey && isNumeric(data[0][k]));
 
     return (
-      <div className="mt-3 rounded-lg bg-zinc-900/50 border border-zinc-800 p-4">
+      <div className="mt-3 rounded-xl border p-4" style={{ background: "#1a1c2e", borderColor: "#2e3048" }}>
         <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={data} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey={catKey} tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} width={48} />
-            <Tooltip
-              contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 6 }}
-              labelStyle={{ color: "#a1a1aa" }}
-            />
+          <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 4 }} barSize={28}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2e3048" vertical={false} />
+            <XAxis dataKey={catKey} tick={{ fill: "#6b6f8a", fontSize: 10 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: "#6b6f8a", fontSize: 10 }} axisLine={false} tickLine={false} width={44} />
+            <Tooltip {...TOOLTIP_STYLE} />
             {numericKeys.slice(0, 2).map((k, i) => (
-              <Bar key={k} dataKey={k} fill={i === 0 ? "#3b82f6" : "#10b981"} radius={[3, 3, 0, 0]} />
+              <Bar key={k} dataKey={k} radius={[4, 4, 0, 0]}>
+                {data.map((_, j) => (
+                  <Cell key={j} fill={i === 0 ? `rgba(65,191,236,${1 - j * 0.08})` : `rgba(125,211,240,${1 - j * 0.08})`} />
+                ))}
+              </Bar>
             ))}
           </BarChart>
         </ResponsiveContainer>
@@ -106,12 +120,12 @@ export function ChartRenderer({ chartHint, data }: Props) {
 
   // ── Table ──────────────────────────────────────────────────────────────────
   return (
-    <div className="mt-3 rounded-lg border border-zinc-800 overflow-auto max-h-64">
+    <div className="mt-3 rounded-xl border overflow-auto max-h-64" style={{ borderColor: "#2e3048" }}>
       <Table>
         <TableHeader>
-          <TableRow className="border-zinc-800">
+          <TableRow style={{ borderColor: "#2e3048" }}>
             {keys.map((k) => (
-              <TableHead key={k} className="text-zinc-400 text-xs py-2">
+              <TableHead key={k} className="text-xs py-2" style={{ color: "#6b6f8a" }}>
                 {k.replace(/_/g, " ")}
               </TableHead>
             ))}
@@ -119,9 +133,9 @@ export function ChartRenderer({ chartHint, data }: Props) {
         </TableHeader>
         <TableBody>
           {data.slice(0, 50).map((row, i) => (
-            <TableRow key={i} className="border-zinc-800">
+            <TableRow key={i} style={{ borderColor: "#2e3048" }}>
               {keys.map((k) => (
-                <TableCell key={k} className="text-zinc-300 text-sm py-2">
+                <TableCell key={k} className="text-sm py-2" style={{ color: "#a0a3b8" }}>
                   {formatValue(row[k])}
                 </TableCell>
               ))}

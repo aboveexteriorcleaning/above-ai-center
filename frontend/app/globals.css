@@ -4,12 +4,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Above Exterior Cleaning brand fonts ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-inter), 'Inter', sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-inter), 'Inter', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,73 +51,46 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+/* ── Above brand palette ─────────────────────────────────────────────────── */
+/* Primary dark:  #303248  (dark blue-gray)                                  */
+/* Accent cyan:   #41BFEC  (action color)                                    */
+/* Deep bg:       #1a1c2e  (darker version of brand dark)                    */
+/* Card bg:       #242638                                                     */
+/* Border:        #2e3048                                                     */
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+:root {
+  --background: #1a1c2e;
+  --foreground: #f0f1f6;
+  --card: #242638;
+  --card-foreground: #f0f1f6;
+  --popover: #242638;
+  --popover-foreground: #f0f1f6;
+  --primary: #41bfec;
+  --primary-foreground: #1a1c2e;
+  --secondary: #2e3048;
+  --secondary-foreground: #a0a3b8;
+  --muted: #2e3048;
+  --muted-foreground: #6b6f8a;
+  --accent: #41bfec;
+  --accent-foreground: #1a1c2e;
+  --destructive: #ef4444;
+  --border: #2e3048;
+  --input: #2e3048;
+  --ring: #41bfec;
+  --chart-1: #41bfec;
+  --chart-2: #7dd3f0;
+  --chart-3: #303248;
+  --chart-4: #4b4f6e;
+  --chart-5: #6b6f8a;
+  --radius: 0.75rem;
+  --sidebar: #1a1c2e;
+  --sidebar-foreground: #f0f1f6;
+  --sidebar-primary: #41bfec;
+  --sidebar-primary-foreground: #1a1c2e;
+  --sidebar-accent: #2e3048;
+  --sidebar-accent-foreground: #f0f1f6;
+  --sidebar-border: #2e3048;
+  --sidebar-ring: #41bfec;
 }
 
 @layer base {
@@ -123,8 +99,34 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
   html {
     @apply font-sans;
   }
+}
+
+/* ── Scrollbar styling ───────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1c2e;
+}
+::-webkit-scrollbar-thumb {
+  background: #2e3048;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #41bfec40;
+}
+
+/* ── Glow utilities ──────────────────────────────────────────────────────── */
+.cyan-glow {
+  box-shadow: 0 0 20px rgba(65, 191, 236, 0.15);
+}
+.cyan-glow-sm {
+  box-shadow: 0 0 10px rgba(65, 191, 236, 0.1);
 }

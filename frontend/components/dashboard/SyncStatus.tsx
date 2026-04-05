@@ -17,12 +17,15 @@ function timeAgo(iso: string): string {
 
 export function SyncStatus({ data }: { data: SyncRow[] }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-3">
       {data.map((row) => (
-        <div key={row.source} className="flex items-center gap-1.5 text-xs text-zinc-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-          <span className="capitalize">{row.source}</span>
-          <span className="text-zinc-600">{timeAgo(row.completed_at)}</span>
+        <div key={row.source} className="flex items-center gap-1.5 text-xs" style={{ color: "#6b6f8a" }}>
+          <span
+            className="w-1.5 h-1.5 rounded-full inline-block"
+            style={{ background: "#41bfec", boxShadow: "0 0 6px rgba(65,191,236,0.6)" }}
+          />
+          <span className="capitalize" style={{ color: "#a0a3b8" }}>{row.source}</span>
+          <span>{timeAgo(row.completed_at)}</span>
         </div>
       ))}
     </div>

@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage, type Message } from "@/components/chat/ChatMessage";
-import { ChatInput } from "@/components/chat/ChatInput";
 import { askQuestion } from "@/lib/api";
 
 const SUGGESTIONS = [
@@ -16,6 +15,7 @@ const SUGGESTIONS = [
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -50,24 +50,47 @@ export default function ChatPage() {
     }
   }
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const q = input.trim();
+    if (!q || loading) return;
+    setInput("");
+    sendMessage(q);
+  }
+
   return (
-    <div className="max-w-3xl mx-auto flex flex-col h-[calc(100vh-8rem)]">
-      <h1 className="text-xl font-semibold text-white mb-4">Chat</h1>
+    <div className="max-w-3xl mx-auto flex flex-col" style={{ height: "calc(100vh - 8rem)" }}>
+      {/* Header */}
+      <div className="mb-4">
+        <h1 className="text-2xl font-semibold tracking-tight" style={{ color: "#f0f1f6" }}>Chat</h1>
+        <p className="text-sm mt-0.5" style={{ color: "#6b6f8a" }}>Ask anything about your business data</p>
+      </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 pr-1">
         {messages.length === 0 && (
-          <div>
-            <p className="text-zinc-400 text-sm mb-4">
-              Ask anything about your jobs, revenue, ad performance, or leads.
-            </p>
+          <div className="pt-4">
+            <p className="text-sm mb-4" style={{ color: "#6b6f8a" }}>Try one of these:</p>
             <div className="flex flex-wrap gap-2">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s}
                   onClick={() => sendMessage(s)}
                   disabled={loading}
-                  className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
+                  className="text-xs rounded-full px-4 py-2 border transition-all duration-150 disabled:opacity-50"
+                  style={{
+                    background: "#242638",
+                    borderColor: "#2e3048",
+                    color: "#a0a3b8",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "#41bfec";
+                    (e.currentTarget as HTMLElement).style.color = "#41bfec";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "#2e3048";
+                    (e.currentTarget as HTMLElement).style.color = "#a0a3b8";
+                  }}
                 >
                   {s}
                 </button>
@@ -82,11 +105,15 @@ export default function ChatPage() {
 
         {loading && (
           <div className="flex">
-            <div className="bg-zinc-800 rounded-2xl rounded-tl-sm px-4 py-3">
-              <div className="flex gap-1 items-center h-5">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+            <div className="rounded-2xl rounded-tl-sm px-4 py-3 border" style={{ background: "#242638", borderColor: "#2e3048" }}>
+              <div className="flex gap-1.5 items-center h-5">
+                {[0, 150, 300].map((delay) => (
+                  <span
+                    key={delay}
+                    className="w-1.5 h-1.5 rounded-full animate-bounce"
+                    style={{ background: "#41bfec", animationDelay: `${delay}ms` }}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -96,8 +123,35 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="pt-4 border-t border-zinc-800">
-        <ChatInput onSend={sendMessage} disabled={loading} />
+      <div className="pt-4" style={{ borderTop: "1px solid #2e3048" }}>
+        <form onSubmit={handleSubmit} className="flex gap-3">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask a question about your business..."
+            disabled={loading}
+            className="flex-1 rounded-xl px-4 py-3 text-sm outline-none transition-all"
+            style={{
+              background: "#242638",
+              border: "1px solid #2e3048",
+              color: "#f0f1f6",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#41bfec")}
+            onBlur={(e) => (e.target.style.borderColor = "#2e3048")}
+          />
+          <button
+            type="submit"
+            disabled={loading || !input.trim()}
+            className="px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-150 disabled:opacity-40"
+            style={{
+              background: "linear-gradient(135deg, #41bfec, #2a9fd6)",
+              color: "#1a1c2e",
+              boxShadow: "0 4px 16px rgba(65,191,236,0.2)",
+            }}
+          >
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );
