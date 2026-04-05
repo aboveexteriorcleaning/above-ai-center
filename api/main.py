@@ -28,6 +28,7 @@ from dotenv import load_dotenv
 
 # ── Path setup — mirrors slack_bot.py and scheduler.py pattern ────────────────
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "tools"))
+sys.path.insert(0, os.path.dirname(__file__))  # so auth.py and dashboard_queries.py are found
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
